@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -23,7 +21,6 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'phone',
-        'image',
         'password',
     ];
 
@@ -45,37 +42,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-
-    public function rate()
-    {
-        return $this->belongsToMany(Product::class, 'ratings')->withPivot('rate', 'notes');
-    }
-
-    public function cart()
-    {
-        return $this->belongsToMany(Product::class, 'carts')->withPivot('qty', 'price');
-    }
-
-
-    public function favorite()
-    {
-        return $this->belongsToMany(Product::class, 'favorites');
-    }
-
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => asset($value),
-        );
-    }
-
 
 
 
