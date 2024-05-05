@@ -8,6 +8,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isEmpty;
+
 class CartUserController extends Controller
 {
     public function __construct()
@@ -29,13 +31,15 @@ class CartUserController extends Controller
     {
         $validate = Validator::make(
             $request->all(),
-            ['qty' => "required|integer"]
+            [
+                'qty' => "required|integer"
+            ]
         );
         if ($validate->fails()) {
             return errorResponse($validate->errors(), 401);
         }
         $product = Product::findOrFail($product_id);
-        $checkItem = auth()->user()->cart->where('id', $product_id)->first();
+        $checkItem = auth()->user()->cart()->where('product_id', $product_id)->first();
         if (!$checkItem) {
             auth()->user()->cart()->attach([
                 $product_id => [
@@ -43,8 +47,10 @@ class CartUserController extends Controller
                     'price' => $product->price,
                 ]
             ]);
+            return successResponse('', 'تم اضافة المنتج بنجاح');
+        } else {
+            return errorResponse('تم اضافة المنتج من قبل');
         }
-        return successResponse('', 'تم اضافة المنتج بنجاح');
     }
 
     public function update($product_id, Request $request)

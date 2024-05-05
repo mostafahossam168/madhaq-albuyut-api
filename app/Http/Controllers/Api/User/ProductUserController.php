@@ -21,7 +21,7 @@ class ProductUserController extends Controller
 
     public function filter($category_id)
     {
-        $products = ProductResource::collection(Product::paginate(num_pag()));
+        $products = ProductResource::collection(Product::where('category_id', $category_id)->paginate(num_pag()));
         return successResponse($products);
     }
 

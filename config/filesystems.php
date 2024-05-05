@@ -50,6 +50,27 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'settings' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/settings'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'admins' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/admins'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'products' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/products'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',

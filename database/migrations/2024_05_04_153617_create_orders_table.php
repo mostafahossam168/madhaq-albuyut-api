@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('subtotal', 8, 2);
             $table->decimal('discount', 8, 2)->default(0);
             $table->decimal('total', 8, 2);
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(1); //pending ,cancel,confirm, complete,
             $table->timestamps();
         });
     }

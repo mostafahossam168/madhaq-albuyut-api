@@ -21,6 +21,8 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'description' => $this->description,
             'images' => ImageResource::collection($this->images),
+            'total_rate' => $this->rates->count() ? ($this->rates->sum('pivot.rate') / $this->rates->count()) : 5,
+            'ratings' => RateResource::collection($this->rates),
         ];
     }
 }

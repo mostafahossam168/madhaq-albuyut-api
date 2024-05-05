@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone', 20)->unique();
             $table->string('password');
+            $table->string('image')->default('uploads/user.png');
             $table->rememberToken();
             $table->timestamps();
         });

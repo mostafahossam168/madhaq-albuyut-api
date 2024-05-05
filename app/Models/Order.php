@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,12 +15,22 @@ class Order extends Model
         'payment_id', 'user_id', 'subtotal', 'discount', 'total', 'status', 'phone', 'address',
     ];
 
+
+    protected $casts = [
+        'status' => Status::class,
+        'order' => Status::class,
+    ];
+
+
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_product')->withPivot('qty', 'price');
     }
-    public function uers()
+
+
+
+    public function user()
     {
-        return $this->belongs(User::class);
+        return $this->belongsTo(User::class);
     }
 }
