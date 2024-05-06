@@ -8,13 +8,14 @@ use App\Models\User;
 use App\Traits\UploadImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Twilio\Rest\Client;
 
 class AuthUserController extends Controller
 {
     use UploadImage;
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'forgetPassword', 'resetPassword', 'changePassword']]);
     }
 
     public function login(Request $request)
@@ -110,6 +111,77 @@ class AuthUserController extends Controller
     {
         return successResponse($this->respondWithToken(auth()->refresh()));
     }
+
+    public function forgetPassword(Request $request)
+    {
+        $valiadtion = Validator::make($request->all(), [
+            'phone' => "required|string|exists:users,phone"
+        ]);
+        if ($valiadtion->fails()) {
+            return errorResponse($valiadtion->errors(), 401);
+        }
+        $code = rand(11111, 99999);
+        $user = User::where('phone', $request->phone)->first();
+        $user->update([
+            'code' => $code,
+            'expire_at' => now()->addMinute(120),
+        ]);
+
+        // $message = "رمز الدخول لمتجر مذاق البيوت هو  :  $code";
+        // $account_sid = getenv('TWILIO_SID');
+        // $auth_token = getenv('TWILIO_TOKEN');
+        // $number = getenv('TWILIO_FROM');
+        // $client = new Client($account_sid, $auth_token);
+        // $client->messages->create('+2' . $request->phone, [
+        //     'from' => $number,
+        //     'body' => $message,
+        // ]);
+        return successResponse(new UserResource($user), 'تم ارسال الكود بنجاح');
+    }
+
+
+
+    public function resetPassword(Request $request)
+    {
+        $valiadtion = Validator::make($request->all(), [
+            'phone' => "required|string|exists:users,phone",
+            'code' => "required|digits:5",
+        ]);
+        if ($valiadtion->fails()) {
+            return errorResponse($valiadtion->errors(), 401);
+        }
+        $user = User::where('phone', $request->phone)->where('code', $request->code)
+            ->whereDate('expire_at', '>=', now())->first();
+        if ($user) {
+            return successResponse(new UserResource($user), 'تم تاكيد الكود بنجاح');
+        }
+        return errorResponse('كود غير صحيح');
+    }
+
+
+
+    public function changePassword(Request $request)
+    {
+        $valiadtion = Validator::make($request->all(), [
+            'phone' => "required|string|exists:users,phone",
+            'code' => "required|digits:5",
+            'password' => "required|string|min:5|confirmed"
+        ]);
+        if ($valiadtion->fails()) {
+            return errorResponse($valiadtion->errors(), 401);
+        }
+        $user = User::where('phone', $request->phone)->where('code', $request->code)
+            ->whereDate('expire_at', '>=', now())->first();
+        $user->update([
+            'code' => null,
+            'expire_at' => null,
+            'password' => bcrypt($request->password)
+        ]);
+        return successResponse(new UserResource($user), 'تم اعادة الرقم السري بنجاح');
+    }
+
+
+
 
     protected function respondWithToken($token)
     {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2024 at 12:24 AM
+-- Generation Time: May 06, 2024 at 02:58 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -44,7 +44,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `name`, `email`, `phone`, `password`, `image`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'ادمن', 'admin@gmail.com', '01064564850', '$2y$10$.JUUOlA4ZpsG60dPJPCh8O2bo0uWC.yQb1ZVacXZZUAU/piMbf2.m', 'uploads/user.png', NULL, '2024-05-05 15:02:38', '2024-05-05 15:02:38');
+(1, 'ادمن', 'admin@gmail.com', '01064564850', '$2y$10$8wsbMD0z5OqSYkA.QmmKX.irgB1y.2Y1gkcNMTDul0LSxw6jHPJha', 'uploads/user.png', NULL, '2024-05-06 09:57:35', '2024-05-06 09:57:35');
 
 -- --------------------------------------------------------
 
@@ -321,7 +321,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `logo`, `text1`, `image1`, `text2`, `image2`, `text3`, `image3`, `f_link`, `i_link`, `t_link`, `email`, `phone`, `conditions`, `policy`, `created_at`, `updated_at`) VALUES
-(1, 'uploads/settings/logo.png', 'sssssssssssssss', 'uploads/settings/image-1.png', '4444444444444', 'uploads/settings/image-2.png', '4444444444444444', 'uploads/settings/image-3.png', 'facebook', 'facebook', 'facebook', 'email@gmail.com', '01064564850', '11111', '1231321321', '2024-05-05 15:02:38', '2024-05-05 15:02:38');
+(1, 'uploads/settings/logo.png', 'sssssssssssssss', 'uploads/settings/image-1.png', '4444444444444', 'uploads/settings/image-2.png', '4444444444444444', 'uploads/settings/image-3.png', 'facebook', 'facebook', 'facebook', 'email@gmail.com', '01064564850', '11111', '1231321321', '2024-05-06 09:57:35', '2024-05-06 09:57:35');
 
 -- --------------------------------------------------------
 
@@ -337,6 +337,8 @@ CREATE TABLE `users` (
   `image` varchar(255) NOT NULL DEFAULT 'uploads/user.png',
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `code` varchar(5) DEFAULT NULL,
+  `expire_at` datetime DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -346,8 +348,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `phone`, `image`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'مستخدم', 'user@gmail.com', '01064564850', 'uploads/user.png', NULL, '$2y$10$AgoQp9DGxg7qPSnCFlPh6.kftoGSBSUbTz7e5O4j2RAWEyVxDr0CO', NULL, '2024-05-05 15:02:38', '2024-05-05 15:02:38');
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `image`, `email_verified_at`, `password`, `code`, `expire_at`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'مستخدم', 'user@gmail.com', '01064564850', 'uploads/user.png', NULL, '$2y$10$jYCcT1K60v.fD2GFOTUIz.VPkRyJ6HG3M9PQ/yEGo8F.ybvqNjt/6', NULL, NULL, NULL, '2024-05-06 09:57:35', '2024-05-06 09:57:35');
 
 --
 -- Indexes for dumped tables

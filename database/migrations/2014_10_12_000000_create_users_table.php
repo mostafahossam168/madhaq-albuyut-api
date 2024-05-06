@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('image')->default('uploads/user.png');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('code', 5)->nullable();
+            $table->dateTime('expire_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -43,6 +43,9 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('refresh', 'refresh');
         Route::get('profile', 'profile');
         Route::post('update-profile', 'updateProfile');
+        Route::post('forget-password', 'forgetPassword');
+        Route::post('reset-password', 'resetPassword');
+        Route::post('change-password', 'changePassword');
     });
     Route::group(['prefix' => 'categories', 'controller' => CategoryUserController::class], function () {
         Route::get('', 'index');
