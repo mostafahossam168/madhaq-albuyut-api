@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\User\CartUserController;
 use App\Http\Controllers\Api\User\CategoryUserController;
 use App\Http\Controllers\Api\User\CouponeUserController;
 use App\Http\Controllers\Api\User\FavoriteUserController;
+use App\Http\Controllers\Api\User\HomeUserController;
 use App\Http\Controllers\Api\User\OrderUserController;
 use App\Http\Controllers\Api\User\PaymentUserController;
 use App\Http\Controllers\Api\User\ProductUserController;
@@ -47,6 +48,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('reset-password', 'resetPassword');
         Route::post('change-password', 'changePassword');
     });
+
+    Route::get('/home', [HomeUserController::class, 'index']);
     Route::group(['prefix' => 'categories', 'controller' => CategoryUserController::class], function () {
         Route::get('', 'index');
         Route::get('/{id}', 'show');
@@ -126,6 +129,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'orders', 'controller' => OrderAdminController::class], function () {
         Route::get('', 'index');
         Route::get('/show/{id}', 'show');
+        Route::get('notifications', 'orderPendeing');
+        Route::post('/confirm-order/{id}', 'confirmOrder');
+        Route::post('/cancel-order/{id}', 'cancelOrder');
     });
 });
 

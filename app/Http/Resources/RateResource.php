@@ -17,7 +17,7 @@ class RateResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => $this->name,
-            'image_user' => $this->image,
+            'image_user' => url('') . $this->image,
             'rate' => $this->pivot->rate,
             'notes' => $this->pivot->notes,
             'date' => date("Y-m-d ", strtotime($this->created_at)),

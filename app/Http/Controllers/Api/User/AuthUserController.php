@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use Twilio\Rest\Client;
+use App\Models\Category;
 use App\Traits\UploadImage;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\Validator;
-use Twilio\Rest\Client;
 
 class AuthUserController extends Controller
 {

@@ -15,13 +15,13 @@ class SettingResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'logo' => $this->logo,
+            'logo' => url('') . $this->logo,
             'text1' => $this->text1,
-            'image1' => $this->image1,
+            'image1' => url('') . $this->image1,
             'text2' => $this->text2,
-            'image2' => $this->image2,
+            'image2' => url('') . $this->image2,
             'text3' => $this->text3,
-            'image3' => $this->image3,
+            'image3' => url('') . $this->image3,
             'f_link' => $this->f_link,
             'i_link' => $this->i_link,
             't_link' => $this->t_link,

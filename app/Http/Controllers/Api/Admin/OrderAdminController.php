@@ -29,10 +29,41 @@ class OrderAdminController extends Controller
 
     public function show($id)
     {
-        $order =  Order::where('id', $id)->first();
+        $order =  Order::find($id);
         if ($order) {
             $order = new OrderResource($order);
             return successResponse($order);
+        }
+        return errorResponse('الطلب غير موجود');
+    }
+
+
+
+    public function orderPendeing()
+    {
+        $orders = Order::where('status', 1)->latest()->paginate(num_pag());
+        $orders = OrderResource::collection($orders);
+        return successResponse($orders);
+    }
+
+
+    public function confirmOrder($id)
+    {
+        $order = Order::where('status', 1)->where('id', $id)->first();
+        if ($order) {
+            $order->update(['status', 3]);
+            return successResponse($order, 'تم تاكيد الطلب');
+        }
+        return errorResponse('الطلب غير موجود');
+    }
+
+
+    public function cancelOrder($id)
+    {
+        $order = Order::where('status', 1)->where('id', $id)->first();
+        if ($order) {
+            $order->update(['status', 2]);
+            return successResponse($order, 'تم الغاء الطلب');
         }
         return errorResponse('الطلب غير موجود');
     }
