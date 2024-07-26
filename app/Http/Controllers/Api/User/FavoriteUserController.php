@@ -25,8 +25,10 @@ class FavoriteUserController extends Controller
         $checkItem = auth()->user()->favorite->where('id', $product_id)->first();
         if (!$checkItem) {
             auth()->user()->favorite()->attach($product_id);
+            return successResponse('', 'تم اضافة المنتج بنجاح');
+        } else {
+            return errorResponse('تم اضافة المنتج من قبل');
         }
-        return successResponse('', 'تم اضافة المنتج بنجاح');
     }
 
     public function remove($product_id)

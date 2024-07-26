@@ -45,6 +45,8 @@ class Setting extends Model
             get: fn (string $value) => asset($value),
         );
     }
+
+
     protected function logo(): Attribute
     {
         return Attribute::make(

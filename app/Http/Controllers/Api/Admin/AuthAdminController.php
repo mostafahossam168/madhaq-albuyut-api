@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminResource;
 use App\Http\Resources\UserResource;
 use App\Traits\UploadImage;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,6 +38,31 @@ class AuthAdminController extends Controller
         return errorResponse('البيانات غير صحيحه', 401);
     }
 
+    public function register(Request $request)
+    {
+        $valiadtion = Validator::make(
+            $request->all(),
+            [
+                'email' => "required|string|email|unique:admins,email|max:255",
+                'name' => "required|string|max:255",
+                'phone' => "required|string:max:20|unique:admins,phone",
+                'password' => "required|string|min:5|max:255|confirmed",
+                'image' => "nullable|image|mimes:jpeg,png,jpg,gif|max:5000",
+            ]
+        );
+        if ($valiadtion->fails()) {
+            return errorResponse($valiadtion->errors(), 401);
+        }
+        $data = $request->except('password', 'image');
+        $data['password'] = bcrypt($request->password);
+        if ($request->hasFile('image') && $request->image != null) {
+            $data['image'] = 'uploads/admins/' . $this->saveImage($request->image, 'admins');
+        }
+        $user = Admin::create($data);
+        $user = auth('api_admin')->login($user);
+        $token = $this->respondWithToken($user);
+        return successResponse($token, 'تم انشاء الحساب بنجاح');
+    }
 
 
 

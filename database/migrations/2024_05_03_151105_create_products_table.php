@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->decimal('price', 8, 2);
             $table->text('description');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
