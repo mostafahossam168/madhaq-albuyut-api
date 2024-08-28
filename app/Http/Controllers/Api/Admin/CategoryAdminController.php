@@ -25,6 +25,7 @@ class CategoryAdminController extends Controller
             $request->all(),
             [
                 'name' => "required|string|max:20|unique:categories,name",
+                'family_id' => "required|exists:families,id",
             ]
         );
         if ($validate->fails()) {
@@ -39,6 +40,7 @@ class CategoryAdminController extends Controller
             $request->all(),
             [
                 'name' => "required|string|max:20|unique:categories,name,$id",
+                'family_id' => "required|exists:families,id",
             ]
         );
         if ($validate->fails()) {

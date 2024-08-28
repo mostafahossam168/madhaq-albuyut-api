@@ -1,24 +1,29 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\AuthAdminController;
-use App\Http\Controllers\Api\Admin\CategoryAdminController;
-use App\Http\Controllers\Api\Admin\HomeAdminController;
-use App\Http\Controllers\Api\Admin\OrderAdminController;
-use App\Http\Controllers\Api\Admin\ProductAdminController;
-use App\Http\Controllers\Api\Admin\UserAdminController;
-use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\User\AuthUserController;
-use App\Http\Controllers\Api\User\CartUserController;
-use App\Http\Controllers\Api\User\CategoryUserController;
-use App\Http\Controllers\Api\User\CouponeUserController;
-use App\Http\Controllers\Api\User\FavoriteUserController;
-use App\Http\Controllers\Api\User\HomeUserController;
-use App\Http\Controllers\Api\User\OrderUserController;
-use App\Http\Controllers\Api\User\PaymentUserController;
-use App\Http\Controllers\Api\User\ProductUserController;
-use App\Http\Controllers\Api\User\RateUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\User\ChatController;
+use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\User\ChatMessageController;
+use App\Http\Controllers\Api\User\AuthUserController;
+use App\Http\Controllers\Api\User\CartUserController;
+use App\Http\Controllers\Api\User\HomeUserController;
+use App\Http\Controllers\Api\User\RateUserController;
+use App\Http\Controllers\Api\User\OrderUserController;
+use App\Http\Controllers\Api\Admin\AuthAdminController;
+use App\Http\Controllers\Api\Admin\HomeAdminController;
+use App\Http\Controllers\Api\Admin\UserAdminController;
+use App\Http\Controllers\Api\Admin\OrderAdminController;
+use App\Http\Controllers\Api\User\CouponeUserController;
+use App\Http\Controllers\Api\User\PaymentUserController;
+use App\Http\Controllers\Api\User\ProductUserController;
+use App\Http\Controllers\Api\User\CategoryUserController;
+use App\Http\Controllers\Api\User\FavoriteUserController;
+use App\Http\Controllers\Api\Admin\ProductAdminController;
+use App\Http\Controllers\Api\Admin\CategoryAdminController;
+use App\Http\Controllers\Api\Admin\FamilyAdminController;
+use App\Http\Controllers\Api\User\ChatMessageUserController;
+use App\Http\Controllers\Api\User\FamilyUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +59,10 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('', 'index');
         Route::get('/{id}', 'show');
     });
+    Route::group(['prefix' => 'families', 'controller' => FamilyUserController::class], function () {
+        Route::get('', 'index');
+        Route::get('/{id}', 'show');
+    });
     Route::group(['prefix' => 'products', 'controller' => ProductUserController::class], function () {
         Route::get('', 'index');
         Route::get('/show/{id}', 'show');
@@ -84,6 +93,23 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('', 'index');
         Route::get('/show/{id}', 'show');
         Route::post('/add', 'add');
+    });
+
+
+
+
+
+    Route::group(['prefix' => 'chats', 'controller' => ChatController::class], function ($router) {
+        Route::get('', 'index');
+        Route::get('show/{id}', 'show');
+        Route::post('/create', 'create');
+    });
+
+
+
+    Route::group(['prefix' => 'chat-messages', 'controller' => ChatMessageUserController::class], function ($router) {
+        Route::get('/{chatId}', 'index');
+        Route::post('/create-message', 'create');
     });
 });
 
@@ -116,6 +142,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('', 'index');
         Route::get('/show/{id}', 'show');
         Route::get('/filter-by-category/{id}', 'filter');
+        Route::post('/add', 'add');
+        Route::post('/update/{id}', 'update');
+        Route::post('/remove/{id}', 'remove');
+    });
+    Route::group(['prefix' => 'families', 'controller' => FamilyAdminController::class], function () {
+        Route::get('', 'index');
+        Route::get('/show/{id}', 'show');
+        // Route::get('/filter-by-category/{id}', 'filter');
         Route::post('/add', 'add');
         Route::post('/update/{id}', 'update');
         Route::post('/remove/{id}', 'remove');

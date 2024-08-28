@@ -11,8 +11,14 @@
                     </li>
                     <!-- menu item Categories-->
                     <li>
-                        <a href="{{ route('admin.categories.index') }}"><i class="fa-regular fa-rectangle-list"></i><span
+                        <a href="{{ route('admin.families.index') }}"><i class="fa-regular fa-rectangle-list"></i><span
                                 class="right-nav-text">
+                                قائمة الاسر المنتجه
+                            </span> </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.categories.index') }}"><i
+                                class="fa-regular fa-rectangle-list"></i><span class="right-nav-text">
                                 قائمة الاقسام
                             </span> </a>
                     </li>
@@ -43,6 +49,13 @@
                     <li>
                         <a href="{{ route('admin.brands.index') }}"><i class="fa-solid fa-money-check"></i><span
                                 class="right-nav-text"> قائمة العلامات التجاريه
+                            </span> </a>
+                    </li>
+                    <!-- menu item Settings-->
+                    <!-- coupones item -->
+                    <li>
+                        <a href="{{ route('admin.coupones.index') }}"><i class="fa-solid fa-money-check"></i><span
+                                class="right-nav-text"> قائمة الخصومات
                             </span> </a>
                     </li>
                     <!-- menu item Settings-->

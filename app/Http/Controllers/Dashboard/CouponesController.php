@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CouponesController extends Controller
 {
     public function __construct()
     {
@@ -17,8 +17,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->paginate(num_pag());
-        return view('categories.index', compact('categories'));
+        $coupones = Coupon::latest()->paginate(num_pag());
+        return view('coupones.index', compact('coupones'));
     }
 
     /**
@@ -36,13 +36,16 @@ class CategoryController extends Controller
     {
         $request->validate(
             [
-                'name' => "required|string|max:20|unique:categories,name",
-                'family_id' => "required|exists:families,id",
+                'code' => "required|unique:coupons,code",
+                'discount' => "required|numeric",
+                'expire_date' => "required|date",
             ]
         );
-        Category::create($request->only('name', 'family_id'));
-        return redirect()->back()->with('success', 'تم انشاء القسم بنجاح');
+        $data = $request->all();
+        Coupon::create($data);
+        return redirect()->back()->with('success', 'تم اضافة  الخصم بنجاح');
     }
+
 
     /**
      * Display the specified resource.
@@ -65,15 +68,17 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::find($id);
+        $coupone = Coupon::findOrFail($id);
         $request->validate(
             [
-                'name' => "required|string|max:20|unique:categories,name,$id",
-                'family_id' => "required|exists:families,id",
+                'code' => "required|unique:coupons,code,$id",
+                'discount' => "required|numeric",
+                'expire_date' => "required|date",
             ]
         );
-        $category->update($request->only('name', 'family_id'));
-        return redirect()->back()->with('success', 'تم تعديل القسم بنجاح');
+        $data = $request->all();
+        $coupone->update($data);
+        return redirect()->back()->with('success', 'تم تعديل  الخصم بنجاح');
     }
 
     /**
@@ -81,8 +86,8 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        return redirect()->back()->with('success', 'تم حذف القسم بنجاح');
+        $coupone = Coupon::findOrFail($id);
+        $coupone->delete();
+        return redirect()->back()->with('success', 'تم حذف الكوبون بنجاح');
     }
 }

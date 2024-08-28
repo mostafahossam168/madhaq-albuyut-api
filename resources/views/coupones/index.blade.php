@@ -1,18 +1,18 @@
 @extends('layouts.master')
 @section('title')
-    قائمة الاقسام
+    قائمة الخصومات
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0">قائمة الاقسام</h4>
+                <h4 class="mb-0">قائمة الخصومات</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
                     <li class="breadcrumb-item"><a href="{{ route('admin.home') }}" class="default-color">الرئيسيه</a></li>
-                    <li class="breadcrumb-item active">قائمة الاقسام</li>
+                    <li class="breadcrumb-item active">قائمة الخصومات</li>
                 </ol>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="card card-statistics h-100">
                 <div class="card-body">
                     <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
-                        اضافة قسم جديده
+                        اضافة خصم جديد
                     </button>
                     <br><br>
                     <div class="table-responsive">
@@ -39,38 +39,39 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>اسم القسم</th>
-                                    <th>الاسره المنتجه</th>
-                                    <th>تاريخ الانشاء</th>
+                                    <th>الكود</th>
+                                    <th>الخصم</th>
+                                    <th>انتهاء الصلاحية</th>
                                     <th>العمليات</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $categorie)
+                                @foreach ($coupones as $coupone)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td>{{ $categorie->name }}</td>
-                                        <td>{{ $categorie->family->name }}</td>
-                                        <td>{{ $categorie->created_at }}</td>
+                                        <td>{{ $coupone->code }}</td>
+                                        <td>{{ $coupone->discount }}</td>
+                                        <td>{{ $coupone->expire_date }}</td>
+
                                         <td>
                                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                                data-target="#edit{{ $categorie->id }}" title="تعديل"><i
+                                                data-target="#edit{{ $coupone->id }}" title="تعديل"><i
                                                     class="fa fa-edit"></i></button>
                                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                                                data-target="#delete{{ $categorie->id }}" title="حذف"><i
+                                                data-target="#delete{{ $coupone->id }}" title="حذف"><i
                                                     class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
 
                                     <!-- edit_modal_Grade -->
-                                    <div class="modal fade" id="edit{{ $categorie->id }}" tabindex="-1" role="dialog"
+                                    <div class="modal fade" id="edit{{ $coupone->id }}" tabindex="-1" role="dialog"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
                                                         id="exampleModalLabel">
-                                                        تعديل القسم
+                                                        تعديل الخصم
                                                     </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -79,32 +80,30 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <!-- add_form -->
-                                                    <form action="{{ route('admin.categories.update', $categorie->id) }}"
-                                                        method="post">
+                                                    <form action="{{ route('admin.coupones.update', $coupone->id) }}"
+                                                        method="post" enctype="multipart/form-data">
                                                         @method('patch')
                                                         @csrf
                                                         <div class="row">
-                                                            <div class="col">
-                                                                <label for="name" class="mr-sm-2">اسم القسم
+                                                            <div class="col-12">
+                                                                <label for="Name" class="mr-sm-2">الكود
                                                                     :</label>
-                                                                <input id="name" type="text" name="name"
-                                                                    class="form-control" value="{{ $categorie->name }}"
-                                                                    required>
-                                                                <input id="id" type="hidden" name="id"
-                                                                    class="form-control" value="{{ $categorie->id }}">
+                                                                <input id="Name" type="text" name="code"
+                                                                    class="form-control" value="{{ $coupone->code }}">
                                                             </div>
-                                                            <div class="col">
-                                                                <label for="category">الاسره المنتجه</label>
-                                                                <select name="family_id" id="category" size="1"
-                                                                    class="form-control form-white">
-                                                                    <option value="" disabled selected>--حدد الاسرة --
-                                                                    </option>
-                                                                    @foreach (App\Models\Family::all() as $family)
-                                                                        <option value="{{ $family->id }}"
-                                                                            @selected($categorie->family_id == $family->id)>
-                                                                            {{ $family->name }}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                            <div class="col-12">
+                                                                <label for="Name" class="mr-sm-2">قيمة الخصم
+                                                                    :</label>
+                                                                <input id="Name" type="number" min="0"
+                                                                    step="any" name="discount"
+                                                                    value="{{ $coupone->discount }}" class="form-control">
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <label for="expire_date" class="mr-sm-2">انتهاء الصلاحية
+                                                                    :</label>
+                                                                <input id="expire_date" type="date" name="expire_date"
+                                                                    class="form-control"
+                                                                    value="{{ $coupone->expire_date }}">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -119,14 +118,14 @@
                                     </div>
 
                                     <!-- delete_modal_Grade -->
-                                    <div class="modal fade" id="delete{{ $categorie->id }}" tabindex="-1" role="dialog"
+                                    <div class="modal fade" id="delete{{ $coupone->id }}" tabindex="-1" role="dialog"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
                                                         id="exampleModalLabel">
-                                                        حذف القسم
+                                                        حذف خصم
                                                     </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -134,16 +133,16 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('admin.categories.destroy', $categorie->id) }}"
+                                                    <form action="{{ route('admin.coupones.destroy', $coupone->id) }}"
                                                         method="post">
                                                         @method('Delete')
                                                         @csrf
-                                                        هل انت متاكد من عملية حذف القسم؟
+                                                        هل انت متاكد من عملية حذف الخصم؟
                                                         <br>
                                                         <input id="id" type="hidden" name="id"
-                                                            class="form-control" value="{{ $categorie->id }}">
+                                                            class="form-control" value="{{ $coupone->id }}">
                                                         <input id="id" type="text" name="name" readonly
-                                                            class="form-control" value="{{ $categorie->name }}">
+                                                            class="form-control" value="{{ $coupone->name }}">
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">الغاء</button>
@@ -160,7 +159,6 @@
                 </div>
             </div>
         </div>
-
         <!-- add_modal_Grade -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -168,7 +166,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
-                            اضافة قسم جديده
+                            اضافة خصم
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -176,27 +174,26 @@
                     </div>
                     <div class="modal-body">
                         <!-- add_form -->
-                        <form action="{{ route('admin.categories.store') }}" method="POST">
+                        <form action="{{ route('admin.coupones.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col">
-                                    <label for="Name" class="mr-sm-2">اسم القسم
+                                <div class="col-12">
+                                    <label for="Name" class="mr-sm-2">الكود
                                         :</label>
-                                    <input id="Name" type="text" name="name" class="form-control"
+                                    <input id="Name" type="text" name="code" class="form-control"
                                         value="">
                                 </div>
-                                <div class="col">
-                                    <label for="category">الاسره المنتجه</label>
-                                    <select name="family_id" id="category" size="1"
-                                        class="form-control form-white">
-                                        <option value="" disabled selected>--حدد الاسرة --</option>
-                                        @foreach (App\Models\Family::all() as $family)
-                                            <option value="{{ $family->id }}">
-                                                {{ $family->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-12">
+                                    <label for="Name" class="mr-sm-2">قيمة الخصم
+                                        :</label>
+                                    <input id="Name" type="number" min="0" step="any" name="discount"
+                                        class="form-control">
                                 </div>
-
+                                <div class="col-12">
+                                    <label for="expire_date" class="mr-sm-2">انتهاء الصلاحية
+                                        :</label>
+                                    <input id="expire_date" type="date" name="expire_date" class="form-control">
+                                </div>
                             </div>
                             <br>
                     </div>
@@ -209,6 +206,4 @@
             </div>
         </div>
     </div>
-
-    <!-- row closed -->
 @endsection

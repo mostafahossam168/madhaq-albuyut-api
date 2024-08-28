@@ -45,7 +45,7 @@ class BrandController extends Controller
         $data = $request->only('name');
         $data['image'] = '/uploads/brands/' . $this->saveImage($request->image, 'brands');
         Brand::create($data);
-        return redirect()->back()->with('success', 'تم حذف العلامة التجاريه بنجاح');
+        return redirect()->back()->with('success', 'تم اضافة العلامة التجاريه بنجاح');
     }
 
     /**

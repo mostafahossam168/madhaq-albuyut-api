@@ -3,6 +3,8 @@
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\BrandController;
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\CouponesController;
+use App\Http\Controllers\Dashboard\FamilyController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\PaymentController;
@@ -35,10 +37,12 @@ Route::group(['as' => 'admin.'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
+    Route::resource('families', FamilyController::class);
     Route::resource('payments', PaymentController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('users', UserController::class);
     Route::resource('brands', BrandController::class);
+    Route::resource('coupones', CouponesController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

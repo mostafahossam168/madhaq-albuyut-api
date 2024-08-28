@@ -64,6 +64,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'families' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/families'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'products' => [
             'driver' => 'local',
             'root' => public_path('uploads/products'),

@@ -74,11 +74,20 @@ class User extends Authenticatable implements JWTSubject
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => asset($value),
+            get: fn(string $value) => asset($value),
         );
     }
 
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'created_by');
+    }
 
+
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
 
 
     public function getJWTIdentifier()
